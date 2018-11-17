@@ -1,0 +1,101 @@
+<script src="../simpletest.js"></script>
+<script>
+
+// Prototype Function
+//  function some(originalArray, callback) {
+//      for(var i = 0; i < originalArray.length; i++) {
+//          if(callback(originalArray[i], i, originalArray)) {
+//              return true;
+//          }
+//      }
+//      return false;
+//  }
+ 
+
+function some(originalArray, callback, optionalThisArgument) {    
+    var functionCallback = callback;
+    var maxRunCount = originalArray.length;
+    if (arguments.length >= 3) {
+      functionCallback = callback.bind(optionalThisArgument);
+    }
+    for(var i = 0; i < maxRunCount; i++){
+        if(i in originalArray && functionCallback(originalArray[i], i, originalArray)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+tests({
+
+  'It should immediately return true if the callback returns true for an element': function () {
+    var runCount = 0;
+    var functionResult = some([1,2,3], function(element){
+      runCount++;
+      return element < 2;
+    })
+    eq(functionResult,true);
+    eq(runCount,1);
+  },
+  
+  'It should return true or false.' : function (){
+    var functionResult = some([1,2,3], function(element){
+      return element < 4;
+    })
+    eq(functionResult,true);
+  },
+
+  'It should pass in the ith element as the first argument to the callback': function() {
+    some([3],function(number){
+      eq(3, number);
+    })
+  },
+
+  'It should pass in the ith position as the second arguement to the callback': function() {
+    some([1],function(number, index){
+      eq(0,index);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the callback': function() {
+    var testArray = [1,2,3];
+    some(testArray, function (number, index, originalArray){
+      eq(originalArray,testArray);
+    })
+  },
+
+  'It should accept an optional this object': function () {
+    some([1], function() {
+      eq(this.description,"I should be accessible within the callback");
+    }, {description:"I should be accessible within the callback"}) 
+  },
+
+  'It should not modify the original array': function () {
+    var testArray = [1,2,3];
+    var testCopy = [1,2,3];
+    some(testArray,function (){});
+    for(var i = 0; i < testArray.length; i++) {
+        eq(testArray[i],testCopy[i]);
+    }
+    },
+
+  'It should run <= originalArray.length times.': function () {
+    var runCount = 0;
+    some([1,2,3],function(number, index, array){
+      runCount++;
+      array.push('66');
+      return number > 0;
+    })
+    eq(runCount,1);
+  },
+
+  'It should only run for elements in the array.': function() {
+    var runCount = 0;
+    some([,2,3,4,],function(number, index, array){
+      runCount++;
+      return number > 4;
+    })
+    eq(runCount,3);
+  }
+});
+</script>

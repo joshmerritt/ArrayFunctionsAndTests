@@ -1,0 +1,87 @@
+<script src="../simpletest.js"></script>
+<script>
+
+// Prototype Function
+//  function find(originalArray, callback) {
+//      for(var i = 0; i < originalArray.length; i++) {
+//          if(callback(originalArray[i], i, originalArray)) {
+//              return array[i];
+//          }
+//      }
+//  }
+
+  
+
+function myFind(originalArray,callback, optionalThisArgument) {
+    var findCallback = callback;
+    var maxRunCount = originalArray.length;
+    if(arguments.length >= 3) {
+        findCallback = callback.bind(optionalThisArgument);
+    }
+    for(var i = 0; i < maxRunCount; i++) {
+         if(findCallback(originalArray[i], i, originalArray)) {
+             return originalArray[i];
+         }
+     }
+};
+
+tests({
+
+  'It should return the first element in the array that the callback returns true.': function() {
+    var result = myFind([1,2,3],function(number){
+        return number > 2;
+    })  
+    eq(result,3);
+  },
+
+  'It should return undefined if no element in array returns true by callback': function() {
+    var result = myFind([1,2,3],function(number){
+        return number > 3;
+    })  
+    eq(result,undefined);
+  },
+
+  'It should pass in the ith element as the first argument to the callback': function() {
+    myFind([3],function(number){
+      eq(3, number);
+    })
+  },
+
+  'It should pass in the index as the second arguement to the callback': function() {
+    myFind([1],function(number, index){
+      eq(0,index);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the callback': function() {
+    var testArray = [1,2,3];
+    myFind(testArray, function (number, index, originalArray){
+      eq(originalArray,testArray);
+    })
+  },
+
+  'It should accept an optional this object': function () {
+    myFind([1], function() {
+      eq(this.description,"I should be accessible within the callback");
+    }, {description:"I should be accessible within the callback"}) 
+  },
+
+  'It should not modify the original array': function () {
+    var testArray = [1,2,3];
+    var testCopy = [1,2,3];
+    myFind(testArray,function (number,index, array){
+        eq(array[index],testCopy[index]);
+    });    
+  },
+
+  'It should run <= originalArray.length times.': function () {
+    var runCount = 0;
+    myFind([1,2,3],function(number, index, array){
+      runCount++;
+      array.push('66');
+    })
+    eq(runCount,3);
+  }
+
+});
+</script>

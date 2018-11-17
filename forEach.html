@@ -1,0 +1,49 @@
+<script src="../tinytest.js"></script>
+<script>
+
+  function forEach(array, callback, optionalThisObject) {
+    var forEachCallback = callback;
+    if(optionalThisObject){
+      forEachCallback = callback.bind(optionalThisObject);
+    }
+    for(var i = 0; i < array.length; i++) {
+      forEachCallback(array[i], i, array);
+    }
+  }
+tests({
+
+  'It should run the callback function array.length times': function() {
+    var runCount = 0;
+    forEach([1,2,3],function(){
+      runCount++;
+    })
+    eq(runCount,3);
+  },
+
+  'It should pass in the ith element as the first argument to the callback': function() {
+    forEach([3],function(number){
+      eq(3, number);
+    })
+  },
+
+  'It should pass in the ith position as the second arguement to the callback': function() {
+    forEach([1],function(number, index){
+      eq(0,index);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the callback': function() {
+    var testArray = [1,2,3];
+    forEach(testArray, function (number, index, originalArray){
+      eq(originalArray,testArray);
+    })
+  },
+
+  'It should accept an optional this object': function () {
+    forEach([1], function() {
+      eq(this.description,"I should be accessible within the callback");
+    }, {description:"I should be accessible within the callback"}) 
+  }
+
+});
+</script>

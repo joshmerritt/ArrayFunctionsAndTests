@@ -1,0 +1,94 @@
+<script src="../tinytest.js"></script>
+<script>
+
+// Requirements
+    // x It should run the call back on each element in the array.
+    // x It should pass the ith element as the first argument to the callback.
+    // x It should pass the index as the second argument to the callback.
+    // x It should pass the array as the third argument in the callback
+    // x It should accept an optional this object.
+    // x It should not return the original array.
+    // x It should return a new array.
+    // x The new array should contain a mapped element for each element in the original array.
+    //   The callback should not be run on undefined indices. 
+    //   It should not run the callback on items added to the original array after the initial map call.   
+
+function map(originalArray, callback, optionalThisObject) {
+    var newCallback = callback;
+    var returnedArray = [];
+    var originalLength = originalArray.length;
+    if(optionalThisObject) {
+        newCallback = newCallback.bind(optionalThisObject);
+    }
+    for(var i = 0; i < originalLength; i++) {
+        if(i in originalArray) {
+            returnedArray[i] = newCallback(originalArray[i], i, originalArray);
+        }
+    }
+
+    return returnedArray;
+};
+
+tests({
+
+  'It should run the callback function array.length times': function() {
+    var runCount = 0;
+    map([1,2,3],function(){
+      runCount++;
+    })
+    eq(runCount,3);
+  },
+
+  'It should pass in the ith element as the first argument to the callback': function() {
+    map([3],function(number){
+      eq(3, number);
+    })
+  },
+
+  'It should pass in the ith position as the second arguement to the callback': function() {
+    map([1],function(number, index){
+      eq(0,index);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the callback': function() {
+    var testArray = [1,2,3];
+    map(testArray, function (number, index, originalArray){
+      eq(originalArray,testArray);
+    })
+  },
+
+  'It should accept an optional this object': function () {
+    map([1], function() {
+      eq(this.description,"I should be accessible within the callback");
+    }, {description:"I should be accessible within the callback"}) 
+  },
+
+  'It should not return the original array': function () {
+    var testArray = [1,2,3];
+    var returnedArray = map(testArray,function (){});
+    eq(testArray !== returnedArray, true);
+    },
+
+  'It should return a new array': function () {
+      eq(true,Array.isArray(map([1,2,3], function(){})));
+  },
+
+  'It should return a mapped element for each element in the original array': function() {
+    var returnedArray = map([1,2],function (number){
+        return number * 3;
+    });
+    eq(2,returnedArray.length);
+    eq(3,returnedArray[0]);
+  },
+
+  'It should skip undefined indicies': function() {
+    var testArray = [,1];  
+    var returnedArray = map(testArray, function(number){
+        return number * 3;
+    });
+    eq(returnedArray[1], 3);
+    eq(0 in returnedArray,false);
+  }
+});
+</script>
