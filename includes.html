@@ -1,0 +1,69 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+Prototype Function
+ function includes(originalArray, searchValue, optionalStartingPostion) {
+    var startingPosition = 0;
+    if(arguments = 3) startingPosition = optionalStartingPostion; 
+    for(var i = startingPosition; i < originalArray.length; i++) {
+         if(originalArray[i] === searchValue)) {
+             return true;
+         }
+     }
+   return false;
+ }
+*/
+   
+function includes(originalArray, searchValue, optionalStartingPostion) {
+    var startingPosition = 0;
+    if(arguments.length === 3) {
+        if(optionalStartingPostion < 0) {
+          optionalStartingPostion = originalArray.length + optionalStartingPostion;
+        }
+        startingPosition = optionalStartingPostion; 
+    }
+    for(var i = startingPosition; i < originalArray.length; i++) {
+         if(originalArray[i] === searchValue) {
+             return true;
+         }
+     }
+   return false;
+ };
+
+
+
+tests({
+
+  'It should return a boolean': function() {
+    var result = includes([1,2,3],3);
+    eq(typeof result === 'boolean',true);
+  },
+  
+  'It should return true if any element in the array matches the search value': function() {
+    var result = includes([1,2,3],2);
+    eq(result,true);
+  },
+
+  'It should return false if no element in array matches the search value': function() {
+    var result = includes([1,2,3],4);
+    eq(result,false);
+  },
+
+  'It should accept an optional starting position as third argument': function () {
+    var result = includes([1,2,3,4],1,1);
+    eq(result,false);
+  },
+
+  'If starting position is greater than the size of the array, false is returned': function () {
+    var result = includes([1,2,3],1,3);
+    eq(result,false);    
+  },
+
+  'If starting postion is negative, it is treated as an offset from the end of the array, e.g. -1 = last element in the array' : function () {
+    var result = includes(['corn','wheat','rice'],'wheat',-1);
+    eq(result,false);  
+  }
+
+});
+</script>
