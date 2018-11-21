@@ -37,80 +37,34 @@ function concat(array1,array2) {
     }
 
 
-// tests({
-
-//   'It should return a new array': function () {
-//       Array.isArray(concat([1,2],[3]));
-//   },
-
-//   'The returned array.length should be the sum of the passed in arrays lengths ': function() {
-//     var testArray = concat([1,2],[3]);
-//     eq(testArray.length,3);
-//   },
-
-//   'It should not modify the original array': function () {
-//     var testArray = [1,2,3];
-//     var testCopy = [1,2,3];
-//     concat(testArray,[1,2,3]);
-//     eq(testArray.length,testCopy.length);
-//     for(var i = 0; i < testCopy.length; i++){
-//         eq(testArray[i],testCopy[i]);
-//     } 
-//   },
-
-//   'It should copy object references': function() {
-//     var originalArray = [[1,2]];
-//     var testArray = concat(originalArray, [4,5]);
-//     originalArray[0].push(3);
-//     eq(testArray.length,3);
-//     eq(testArray[0].length,3);
-//   }
-// });
 tests({
-    'It should return an array.': function () {
-      var returnedValue = concat();
-      eq(Array.isArray(returnedValue), true);
-    },
-    'It should return a new array, not the array(s) provided as argument(s).': function () {
-      var originalArray = [1, 2, 3];
-      var returnedArray = concat(originalArray);
-      eq(returnedArray !== originalArray, true);
-    },
-    "It should return a new array consisting of, in order of provided arguments, each argument's elements (for array arguments) or each argument itself (for non-array arguments).": function () {
-      var arr1 = [1, 2];
-      var arr2 = [3, 4];
-      var returnedArray = concat(arr1, arr2);
-      eq(arr1[0], returnedArray[0]);
-      eq(arr1[1], returnedArray[1]);
-      eq(arr2[0], returnedArray[2]);
-      eq(arr2[1], returnedArray[3]);
-    },
-    'It should copy any object references (and not the actual objects) from the array(s) provided as argument(s) into the new array.': function () {
-      var obj1 = { a: true };
-      var returnedArray = concat(obj1);
-      eq(returnedArray[0].a, true);
-      obj1.a = false;
-      eq(returnedArray[0].a, false);
-    },
-    'It should copy any primitive value(s) provided as argument(s) into the new array.': function () {
-      var returnedArray = concat(0, 'string', true);
-      eq(returnedArray[0], 0);
-      eq(returnedArray[1], 'string');
-      eq(returnedArray[2], true);
-    },
-    'It should not alter \'this\'.': function () {
-      var returnedArray = concat(this);
-      eq(returnedArray[0], this);
-    },
-    'It should not mutate the array(s) provided as argument(s).': function () {
-      var arr1 = [1, 2, 3];
-      concat(arr1);
-      eq(JSON.stringify(arr1), JSON.stringify([1, 2, 3]));
-    },
-    'It should not recurse into nested array argument(s).': function () {
-      var returnedArray = concat([[0]]);
-      eq(Number.isInteger(returnedArray[0]), false);
-      eq(Array.isArray(returnedArray[0]), true);
-    }
-  });
+
+  'It should return a new array': function () {
+      Array.isArray(concat([1,2],[3]));
+  },
+
+  'The returned array.length should be the sum of the passed in arrays lengths ': function() {
+    var testArray = concat([1,2],[3]);
+    eq(testArray.length,3);
+  },
+
+  'It should not modify the original array': function () {
+    var testArray = [1,2,3];
+    var testCopy = [1,2,3];
+    concat(testArray,[1,2,3]);
+    eq(testArray.length,testCopy.length);
+    for(var i = 0; i < testCopy.length; i++){
+        eq(testArray[i],testCopy[i]);
+    } 
+  },
+
+  'It should copy object references': function() {
+    var originalArray = [[1,2]];
+    var testArray = concat(originalArray, [4,5]);
+    originalArray[0].push(3);
+    eq(testArray.length,3);
+    eq(testArray[0].length,3);
+  }
+});
+
 </script>

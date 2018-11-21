@@ -1,0 +1,66 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/* Prototype function
+    function join(originalArray,optionalSeparator) {
+        string returnString = '';
+        for(var i = 0; i < originalArray.length; i++) {
+            returnString += currentArray[i];
+        }
+        return returnString;
+    }
+*/
+
+function join(originalArray,optionalSeparator) {
+        var returnString = '';
+        var separator = ',';
+        var arrayLength = originalArray.length;
+        if(1 in arguments) separator = optionalSeparator;
+        for(var i = 0; i < arrayLength; i++) {
+            returnString += originalArray[i];
+            if(i < (arrayLength - 1)) returnString += separator;
+        }
+        return returnString;
+    }
+
+
+tests({
+
+  'It should return a string': function () {
+    var result = join([1,2,3]);
+    eq(typeof result === 'string',true);
+  },
+
+  'It should accept a separator': function () {
+    var result = join([1,2,3],'-');
+    eq(result === '1-2-3',true);
+  },
+
+  'It should use a comma as the default separator if none provided': function () {
+    var result = join([1,2,3]);
+    eq(result === '1,2,3',true);
+  },
+
+  'It should accept an empty string as a separator': function() {
+    var result = join([1,2,3],'');
+    eq(result === '123',true);
+  },
+
+  'It should convert a separator to a string': function() {
+    var result = join([1,2,3],4);
+    eq(result === '14243',true);
+  },
+
+  'It should not modify the original array': function () {
+    var testArray = [1,2,3];
+    var testCopy = [1,2,3];
+    join(testArray);
+    eq(testArray.length,testCopy.length);
+    for(var i = 0; i < testCopy.length; i++){
+        eq(testArray[i],testCopy[i]);
+    } 
+  },
+
+});
+
+</script>
