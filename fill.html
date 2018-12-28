@@ -1,0 +1,111 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/* Prototype function
+    function fill(originalArray, value, start, end) {
+        var startPos = 0;
+        var endPos = originalArray.length;
+        if(arguments.length > 2) {
+          startPos = start;
+        }
+        if(arguments.length > 3) {
+          endPos = end;
+        }
+        for(var i = startPos; i < endPos; i++) {
+          originalArray[i] = value;
+        }
+        return originalArray;
+    }
+*/
+
+function fill(originalArray, value, start, end) {
+      var startPos = 0;
+      var endPos = originalArray.length;
+      if(arguments.length > 2) {
+        if(start < 0) {
+          startPos = originalArray.length + start;
+        }
+        else {
+          startPos = start;
+        }
+      }
+      if(arguments.length > 3) {
+        if(end < 0) {
+          endPos = originalArray.length + end;
+        }
+        else {
+          endPos = end;
+        }
+      }
+      for(var i = startPos; i < endPos; i++) {
+        originalArray[i] = value;
+      }
+      return originalArray;
+  }
+
+
+tests({
+
+  'It should return an array': function () {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6);
+    eq(Array.isArray(returnResult),true);
+  },
+
+  'It should modify the original array': function () {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6);
+    eq(testArray[0],6);
+  },
+
+  'It should accept an optional starting position': function () {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6, 1);
+    eq(testArray[0],1);
+    eq(testArray[1],6);
+    eq(testArray[2],6);
+  },
+
+  'It should accept an optional end position': function () {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6, 0, 1);
+    eq(testArray[0],6);
+    eq(testArray[1],2);
+    eq(testArray[2],3);
+  },
+
+  'It should default to 0 if no starting position is provided': function () {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6);
+    eq(testArray[0],6);
+    eq(testArray[1],6);
+    eq(testArray[2],6);
+  },
+
+  'It should default to original array length if no end position is provided': function () {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6, 1);
+    eq(testArray[0],1);
+    eq(testArray[1],6);
+    eq(testArray[2],6);
+  },
+
+  'If start provided is negative, it acts as an offset from the end of the array': function() {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6, -1);
+    eq(testArray[0],1);
+    eq(testArray[1],2);
+    eq(testArray[2],6);
+  },
+
+  'If end provided is negative, it acts as an offset from the end of the array': function() {
+    var testArray = [1,2,3];
+    var returnResult = fill(testArray, 6, 0, -1);
+    eq(testArray[0],6);
+    eq(testArray[1],6);
+    eq(testArray[2],3);
+  }
+
+});
+
+</script>

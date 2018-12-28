@@ -1,0 +1,56 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/* Prototype function
+    function unshift(originalArray, element1 [,...[,elementN]]) {
+        elementsToAdd = arguments.length - 1;
+        for(var i = 0; i < elementsToAdd; i++) {
+            originalArray[elementsToAdd + i] = originalArray[i];
+            originalArray[i] = argument[i];
+        }
+        return originalArray.length;;
+    }
+*/
+
+
+
+function unshift(originalArray, element) {
+    var elementsToAdd = arguments.length - 1;
+    var originalNumElements = originalArray.length;
+    for(var i = 1; i <= originalNumElements; i++) {
+        originalArray[elementsToAdd + originalNumElements - i] = originalArray[originalNumElements - i];
+    }
+    for(var i = 0; i < elementsToAdd; i++) {
+        originalArray[i] = arguments[i+1];      
+    }
+    return originalArray.length;
+}
+
+
+tests({
+
+  'It should return the length of the array': function () {
+    var testArray = [1,2,3];
+    var returnResult = unshift(testArray,4);
+    eq(returnResult,4);
+  },
+
+  'It should accept multiple elements to append': function () {
+    var testArray = [1,2,3];
+    var returnResult = unshift(testArray,4,5);
+    eq(returnResult,5);
+  },
+
+  'It should add elements to the original array': function () {
+    var testArray = [1,2,3];
+    var returnResult = unshift(testArray,4,5,'six');
+    eq(returnResult,6);
+    eq(testArray[0],4);
+    eq(testArray[1],5);
+    eq(testArray[2],'six');
+  },
+
+
+});
+
+</script>

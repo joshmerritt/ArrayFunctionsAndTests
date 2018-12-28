@@ -1,0 +1,50 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/* Prototype function
+    function push(originalArray, element1 [,...[,elementN]]) {
+        elementsToAdd = arguments.length - 1;
+        startingPosition = originalArray.length - 1;
+        for(var i = 1; i < elementsToAdd; i++) {
+            originalArray[originalLength + i] = argument[i];
+        }
+        return originalArray.length;;
+    }
+*/
+
+function push(originalArray,element1) {
+        var elementsToAdd = arguments.length - 1;
+        var startingPosition = originalArray.length - 1;
+        for(var i = 1; i <= elementsToAdd; i++) {
+            originalArray[startingPosition + i] = arguments[i];
+        }
+        return originalArray.length;;
+    }
+
+
+tests({
+
+  'It should return the length of the array': function () {
+    var testArray = [1,2,3];
+    var returnResult = push(testArray,4);
+    eq(returnResult,4);
+  },
+
+  'It should accept multiple elements to append': function () {
+    var testArray = [1,2,3];
+    var returnResult = push(testArray,4,5,'six');
+    eq(returnResult,6);
+  },
+
+  'It should add elements to the original array': function () {
+    var testArray = [1,2,3];
+    var returnResult = push(testArray,4,5,6);
+    eq(returnResult,6);
+    eq(testArray[3],4);
+    eq(testArray[4],5);
+    eq(testArray[5],6);
+  },
+
+});
+
+</script>

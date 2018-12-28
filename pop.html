@@ -1,0 +1,51 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/* Prototype function
+    function pop(originalArray) {
+        var returnElementIndex = originalArray.length - 1;
+        var returnElement = originalArray[returnElementIndex];
+        delete originalArray[returnElementIndex];
+        return returnElement;
+    }
+*/
+
+function pop(originalArray) {
+    if(originalArray.length === 0) return undefined;
+    var returnElementIndex = originalArray.length - 1;
+    var returnElement = originalArray[returnElementIndex];
+    delete originalArray[returnElementIndex];
+    originalArray.length--;
+    return returnElement;
+}
+
+
+tests({
+
+  'It should return the removed element': function () {
+    var testArray = [1,2,3];
+    var returnResult = pop(testArray);
+    eq(returnResult,3);
+  },
+
+  'It should modify the original array': function () {
+    var testArray = [1,2,3];
+    var returnResult = pop(testArray);
+    eq(testArray[2],undefined);
+  },
+
+  'It should shorten the original array by 1': function () {
+    var testArray = [1,2,3];
+    var returnResult = pop(testArray);
+    eq(testArray.length,2);
+  },
+
+  'It should return undefined for an empty array': function () {
+    var testArray = [];
+    var returnResult = pop(testArray);
+    eq(returnResult,undefined);
+  },
+
+});
+
+</script>

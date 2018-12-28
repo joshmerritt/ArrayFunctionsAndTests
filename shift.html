@@ -1,0 +1,68 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/* Prototype function
+    function shift(originalArray) {
+        var returnElement = originalArray[0];
+        for(var i = 0; i < originalArray.length; i++) {
+          originalArray[i] = originalArray[i+1];
+        }
+        delete originalArray[originalArray.length];
+        originalArray.length--;
+        return returnElement;
+    }
+*/
+
+function shift(originalArray) {
+      if(originalArray.length === 0) return undefined;
+      var returnElement = originalArray[0];
+      for(var i = 0; i < originalArray.length; i++) {
+        originalArray[i] = originalArray[i+1];
+      }
+      delete originalArray[originalArray.length];
+      originalArray.length--;
+      return returnElement;
+    }
+
+
+tests({
+
+  'It should return the removed element': function () {
+    var testArray = [1,2,3];
+    var returnResult = shift(testArray);
+    eq(returnResult,1);
+  },
+
+  'It should modify the original array': function () {
+    var testArray = [1,2,3];
+    var returnResult = shift(testArray);
+    eq(testArray[2],undefined);
+  },
+
+  'It should shorten the original array by 1': function () {
+    var testArray = [1,2,3];
+    var returnResult = shift(testArray);
+    eq(testArray.length,2);
+  },
+
+  'It should return undefined for an empty array': function () {
+    var testArray = [];
+    var returnResult = shift(testArray);
+    eq(returnResult,undefined);
+  },
+
+  'It should return the element at the zero index': function () {
+    var testArray = [1,2,3];
+    var returnResult = shift(testArray);
+    eq(returnResult,1);
+  },
+
+  'It should shift the remaining elements indices by -1': function () {
+    var testArray = [1,2,3];
+    var returnResult = shift(testArray);
+    eq(testArray.indexOf(2),0);
+    eq(testArray.indexOf(1),-1)
+  }
+});
+
+</script>
